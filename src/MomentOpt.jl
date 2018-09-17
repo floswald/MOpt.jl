@@ -1,31 +1,33 @@
 
 module MomentOpt
 
+__precompile__(false)
+
 # Dependencies
 # ############
 
+using Logging
 using Distributions 
-using MiniLogging
 using DataFrames, DataFramesMeta
-import Base.show, Base.std
+import Base.show 
+using Statistics
 using DataStructures
 using PDMats
 using Documenter
 using Plots
 using FileIO
 using JLD2
+using GLM
+using Distributed
 
 gr()
 
-# setup MiniLogging
-logger = get_logger()
-# if isinteractive()
-#     basic_config(MiniLogging.DEBUG; date_format="%H:%M:%S")
-# else
-    basic_config(MiniLogging.INFO; date_format="%H:%M:%S")
-# end
 
-import Base.get, Base.mean, Base.write, Base.start, Base.==
+# set log level
+LogLevel(Logging.Debug)
+
+import Base.get,Base.write, Base.start, Base.==
+import Statistics: mean
 
 # exports: Types
 export MProb, Eval,MAlgo, MAlgoBGP 
@@ -50,7 +52,8 @@ export addParam!,
        save,
        readMalgo,
        restartMOpt!,
-       extendBGPChain!
+       extendBGPChain!,
+       fitMirror
 
 
 
@@ -68,7 +71,7 @@ include("mopt/Examples.jl")
 include("mopt/plotting.jl")
 
 
-end 	# module
+end    # module
 
 
 
